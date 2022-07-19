@@ -8,7 +8,7 @@
  
             - Nodejs
             - Composer
-            - PHP >= v78.00
+            - PHP > v7.4 - 8.00 <=
             - yarn or npm 
 
   
