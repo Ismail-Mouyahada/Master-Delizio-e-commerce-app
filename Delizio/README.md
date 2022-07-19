@@ -1,4 +1,8 @@
- #Clone the content of '/Delizio' to your local machine
+
+<img src='https://github.com/Ismail-Mouyahada/Delizio-Original-Repo/blob/main/screencapture-127-0-0-1-8000-2022-07-19-11_28_31.png'/>
+
+
+#Clone the content of '/Delizio' to your local machine
  
  - Make sure you have all the needed independancies of Laravel Framework. 
  
