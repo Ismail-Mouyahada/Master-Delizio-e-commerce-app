@@ -1,0 +1,16 @@
+------- HTML5 ET CSS3 ET Javascript -------
+
+-------------------------
+Technologie : Boostrap 5
+justification : le projet derait être réalisé dans un temps limité donc partir sur un Framework CSS c'est un gange de temps énorme sans oublier qu'il faudra maîtriser le CSS  avant de passer par ces framework, ce qui donne plus de flexibilité.
+-------------------------
+
+-------------------------
+Technologie : jQuery & Ajax
+justification : ces deux technologies aide énormément dans la performance mais aussi apliquer le concept de "dont't repeat yourself" afin d'écrire un code propre et sémantique.
+-------------------------
+
+-------------------------
+Technologie : Blade laravel Structure
+justification :Blade est le moteur de template utilisé par Laravel. Son but est de permettre d'utiliser du php sur notre vue mais d'une manière assez particulière. Pour créer un fichier qui utilise le moteur de template Blade il vous faut ajouter l'extension “. blade. et ça donnes accès pour renforcer la sécurité de votre côté client.
+-------------------------
