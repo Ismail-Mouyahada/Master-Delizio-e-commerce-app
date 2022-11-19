@@ -1,3 +1,5 @@
+Site de l'app : http://delizio.tk/ (si le lien ne marche pas , c'est normal le serveur temporaire n'est plus dispo)
+
 
 <img src='https://github.com/Ismail-Mouyahada/Delizio-Original-Repo/blob/main/screencapture-127-0-0-1-8000-2022-07-19-11_28_31.png'/>
 
