@@ -1,187 +1,291 @@
-Site de l'app : http://delizio.tk/ (si le lien ne marche pas , c'est normal le serveur temporaire n'est plus dispo)
+## Master-Delizio-e-commerce-app 
 
 
 <img src='https://github.com/Ismail-Mouyahada/Delizio-Original-Repo/blob/main/screencapture-127-0-0-1-8000-2022-07-19-11_28_31.png'/>
 
+Creating a mobile e-commerce app with Dart (using Flutter for the frontend) and Laravel for the backend API involves several steps. Here's a detailed guide to help you get started.
 
-#Clone the content of '/Delizio' to your local machine
- 
- - Make sure you have all the needed independancies of Laravel Framework. 
- 
-            - Nodejs
-            - Composer
-            - PHP > v7.4 - 8.00 <=
-            - yarn or npm 
+### High-Level Plan
 
-  
-  Step 1: Open the project in your favourite IDE.
-  
-  Step 2: Open your terminal in the project root directory
-  
-  Step : launch the following commands :
-  
-          "" composer install ""
-          "" npm install && npm run dev ""
-          "" php artisan serve"" // check if everything is Ok
-          "" php artisan migrate""
-          "" php artisan db:seed""
-          "" php artisan serve"" // if your local server went off.
-  
+1. **Setup Laravel for Backend API**
+2. **Develop Backend API Endpoints**
+3. **Setup Flutter for Mobile App Development**
+4. **Integrate Laravel API with Flutter**
+5. **Design and Implement the Mobile Interface**
 
+### Step-by-Step Instructions
 
-            +--------+----------+---------------------------+------------------------------------+------------------------------------------------------------------------+---------------------------------------------+
-            | Domain | Method   | URI                       | Name                               | Action                                                                 | Middleware     
-                                         |
-            +--------+----------+---------------------------+------------------------------------+------------------------------------------------------------------------+---------------------------------------------+
-            |        | GET|HEAD | /                         | pageAccueil                        | App\Http\Controllers\AccueilController@index                           | web                                         |
-            |        | GET|HEAD | accueil                   | accueil                            | App\Http\Controllers\HomeController@index                              | web                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate            |
-            |        | GET|HEAD | admin                     | admin.view                         | App\Http\Controllers\HomeController@adminView                          | web                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\IsAdmin                 |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate            |
-            |        | GET|HEAD | api/documentation         | l5-swagger.default.api             | L5Swagger\Http\Controllers\SwaggerController@api                       | L5Swagger\Http\Middleware\Config            |
-            |        | GET|HEAD | api/oauth2-callback       | l5-swagger.default.oauth2_callback | L5Swagger\Http\Controllers\SwaggerController@oauth2Callback            | L5Swagger\Http\Middleware\Config            |
-            |        | GET|HEAD | api/user                  |                                    | Closure                                                                | api                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | POST     | api/v1/api-auth           |                                    | App\Http\Controllers\services\ApiController@login                      | api                                         |
-            |        | GET|HEAD | api/v1/categories         |                                    | Closure                                                                | api                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | POST     | api/v1/category/create    |                                    | Closure                                                                | api                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | POST     | api/v1/recipe/create      |                                    | Closure                                                                | api                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | DELETE   | api/v1/recipe/delete/{id} |                                    | Closure                                                                | api                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | PUT      | api/v1/recipe/update/{id} |                                    | Closure                                                                | api            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | GET|HEAD | api/v1/recipe/{id}        |                                    | Closure                                                                | api            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | GET|HEAD | api/v1/recipes            |                                    | Closure                                                                | api            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | POST     | api/v1/user/create        |                                    | Closure                                                                | api            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | DELETE   | api/v1/user/delete/{id}   |                                    | Closure                                                                | api            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | PUT      | api/v1/user/update/{id}   |                                    | Closure                                                                | api            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | GET|HEAD | api/v1/user/{id}          |                                    | Closure                                                                | api            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | GET|HEAD | api/v1/users              |                                    | Closure                                                                | api            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate:sanctum    |
-            |        | GET|HEAD | categorie/create          | categorie.create                   | App\Http\Controllers\CategorieController@create                        | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | Auth           
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\IsAdmin                 |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate            |
-            |        | GET|HEAD | categorie/delete/{id}     | categorie.destroy                  | App\Http\Controllers\CategorieController@destroy                       | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | Auth           
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\IsAdmin                 |
-            |        | GET|HEAD | categorie/edit            | categorie.edit                     | App\Http\Controllers\CategorieController@edit                          | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | Auth           
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\IsAdmin                 |
-            |        | GET|HEAD | categorie/index           | categorie.index                    | App\Http\Controllers\CategorieController@index                         | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | Auth           
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\IsAdmin                 |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate            |
-            |        | POST     | categorie/store           | categorie.store                    | App\Http\Controllers\CategorieController@store                         | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | Auth           
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\IsAdmin                 |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate            |
-            |        | GET|HEAD | categories/top/recettes   | recette.categories                 | App\Http\Controllers\RecetteController@categorie                       | web            
-                                         |
-            |        | POST     | comment/ajotuer/{id}      | comment.store                      | App\Http\Controllers\CommentController@store                           | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate            |
-            |        | GET|HEAD | contact                   | contacter                          | App\Http\Controllers\ContactController@index                           | web            
-                                         |
-            |        | GET|HEAD | docs/asset/{asset}        | l5-swagger.default.asset           | L5Swagger\Http\Controllers\SwaggerAssetController@index                | L5Swagger\Http\Middleware\Config            |
-            |        | GET|HEAD | docs/{jsonFile?}          | l5-swagger.default.docs            | L5Swagger\Http\Controllers\SwaggerController@docs                      | L5Swagger\Http\Middleware\Config            |
-            |        | POST     | like-recette/{id}         | like.recette                       | App\Http\Controllers\RecetteController@likeRecette                     | web            
-                                         |
-            |        | GET|HEAD | login                     | login                              | App\Http\Controllers\Auth\LoginController@showLoginForm                | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\RedirectIfAuthenticated |
-            |        | POST     | login                     |                                    | App\Http\Controllers\Auth\LoginController@login                        | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\RedirectIfAuthenticated |
-            |        | POST     | logout                    | logout                             | App\Http\Controllers\Auth\LoginController@logout                       | web            
-                                         |
-            |        | POST     | message/send              | message.create                     | App\Http\Controllers\MessageController@create                          | web            
-                                         |
-            |        | GET|HEAD | message/supprimer/{id}    | message.destory                    | App\Http\Controllers\MessageController@destroy                         | web            
-                                         |
-            |        | GET|HEAD | password/confirm          | password.confirm                   | App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm    | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate            |
-            |        | POST     | password/confirm          |                                    | App\Http\Controllers\Auth\ConfirmPasswordController@confirm            | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate            |
-            |        | POST     | password/email            | password.email                     | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web            
-                                         |
-            |        | POST     | password/reset            | password.update                    | App\Http\Controllers\Auth\ResetPasswordController@reset                | web            
-                                         |
-            |        | GET|HEAD | password/reset            | password.request                   | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web            
-                                         |
-            |        | GET|HEAD | password/reset/{token}    | password.reset                     | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web            
-                                         |
-            |        | GET|HEAD | recette/creer             | creer                              | App\Http\Controllers\RecetteController@create                          | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate            |
-            |        | GET|HEAD | recette/details/{id}      | recipe.show                        | App\Http\Controllers\RecetteController@show                            | web            
-                                         |
-            |        | POST     | recette/enregistrer       | enregistrer                        | App\Http\Controllers\RecetteController@store                           | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate            |
-            |        | GET|HEAD | recette/export/{id}       | documents.recipe                   | App\Http\Controllers\DocumentController@exportPDF                      | web            
-                                         |
-            |        | GET|HEAD | recette/modifier/{id}     | modifier.{id}                      | App\Http\Controllers\RecetteController@edit                            | web            
-                                         |
-            |        | GET|HEAD | recette/show-pdf/{id}     | documents.show                     | App\Http\Controllers\DocumentController@showExport                     | web            
-                                         |
-            |        | GET|HEAD | recette/supprimer/{id}    | supprimer.{id}                     | App\Http\Controllers\RecetteController@destroy                         | web            
-                                         |
-            |        | PUT      | recette/update/{id}       | recette.update                     | App\Http\Controllers\RecetteController@update                          | web            
-                                         |
-            |        | GET|HEAD | recettes                  | liste                              | App\Http\Controllers\RecetteController@index                           | web            
-                                         |
-            |        | POST     | register                  |                                    | App\Http\Controllers\Auth\RegisterController@register                  | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\RedirectIfAuthenticated |
-            |        | GET|HEAD | register                  | register                           | App\Http\Controllers\Auth\RegisterController@showRegistrationForm      | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\RedirectIfAuthenticated |
-            |        | GET|HEAD | remerciement              | merci                              | App\Http\Controllers\MessageController@merci                           | web            
-                                         |
-            |        | GET|HEAD | sanctum/csrf-cookie       |                                    | Laravel\Sanctum\Http\Controllers\CsrfCookieController@show             | web            
-                                         |
-            |        | GET|HEAD | send/mail/{id}            | email.send                         | App\Http\Controllers\emails\EmailController@send                       | web            
-                                         |
-            |        | GET|HEAD | top/recettes              | filtrer                            | App\Http\Controllers\RecetteController@topRecettes                     | web            
-                                         |
-            |        | POST     | unlike-recette/{id}       | unlike.recette                     | App\Http\Controllers\RecetteController@unlikeRecette                   | web            
-                                         |
-            |        | GET|HEAD | user/delete/{id}          | user.destroy                       | App\Http\Controllers\AdminController@destroy                           | web            
-                                         |
-            |        | GET|HEAD | user/edit/{id}            | user.edit                          | App\Http\Controllers\AdminController@edit                              | web            
-                                         |
-            |        | GET|HEAD | user/profile              | profile.show                       | App\Http\Controllers\AdminController@showProfile                       | web            
-                                         |
-            |        |          |                           |                                    |                                                                        | App\Http\Middleware\Authenticate            |
-            +--------+----------+---------------------------+------------------------------------+------------------------------------------------------------------------+---------------------------------------------+
+#### 1. Setup Laravel for Backend API
+
+1. **Install Laravel**
+   - Follow the installation instructions for [Laravel](https://laravel.com/docs/10.x/installation).
+
+2. **Create a New Laravel Project**
+   ```sh
+   composer create-project --prefer-dist laravel/laravel delizio-backend
+   cd delizio-backend
+   ```
+
+3. **Setup Database Configuration**
+   - Update the `.env` file with your database credentials.
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=delizio
+   DB_USERNAME=root
+   DB_PASSWORD=secret
+   ```
+
+4. **Run Migrations**
+   ```sh
+   php artisan migrate
+   ```
+
+#### 2. Develop Backend API Endpoints
+
+1. **Create Models and Migrations**
+   ```sh
+   php artisan make:model Product -m
+   php artisan make:model Order -m
+   php artisan make:model User -m
+   ```
+
+2. **Define Database Schema**
+   - Edit the migration files in `database/migrations`.
+
+   Example for `create_products_table.php`:
+   ```php
+   public function up()
+   {
+       Schema::create('products', function (Blueprint $table) {
+           $table->id();
+           $table->string('name');
+           $table->text('description');
+           $table->decimal('price', 8, 2);
+           $table->integer('stock');
+           $table->timestamps();
+       });
+   }
+   ```
+
+3. **Run Migrations**
+   ```sh
+   php artisan migrate
+   ```
+
+4. **Create API Controllers**
+   ```sh
+   php artisan make:controller API/ProductController
+   php artisan make:controller API/OrderController
+   php artisan make:controller API/UserController
+   ```
+
+5. **Define Routes**
+   - Edit `routes/api.php`.
+   ```php
+   use App\Http\Controllers\API\ProductController;
+   use App\Http\Controllers\API\OrderController;
+   use App\Http\Controllers\API\UserController;
+
+   Route::middleware('auth:sanctum')->group(function () {
+       Route::get('/products', [ProductController::class, 'index']);
+       Route::get('/products/{id}', [ProductController::class, 'show']);
+       Route::post('/orders', [OrderController::class, 'store']);
+       Route::get('/orders/{id}', [OrderController::class, 'show']);
+   });
+
+   Route::post('/register', [UserController::class, 'register']);
+   Route::post('/login', [UserController::class, 'login']);
+   ```
+
+6. **Implement Controller Methods**
+   - Example for `ProductController.php`:
+   ```php
+   namespace App\Http\Controllers\API;
+
+   use App\Http\Controllers\Controller;
+   use App\Models\Product;
+   use Illuminate\Http\Request;
+
+   class ProductController extends Controller
+   {
+       public function index()
+       {
+           return Product::all();
+       }
+
+       public function show($id)
+       {
+           return Product::findOrFail($id);
+       }
+   }
+   ```
+
+#### 3. Setup Flutter for Mobile App Development
+
+1. **Install Flutter**
+   - Follow the installation instructions for [Flutter](https://flutter.dev/docs/get-started/install).
+
+2. **Create a New Flutter Project**
+   ```sh
+   flutter create delizio_app
+   cd delizio_app
+   ```
+
+3. **Add Dependencies**
+   - Update `pubspec.yaml` to include necessary packages.
+   ```yaml
+   dependencies:
+     flutter:
+       sdk: flutter
+     http: ^0.13.3
+     provider: ^5.0.0
+   ```
+
+4. **Setup Project Structure**
+   - Create folders for models, providers, and screens.
+
+#### 4. Integrate Laravel API with Flutter
+
+1. **Create Models**
+   - Example for `product.dart`:
+   ```dart
+   class Product {
+     final int id;
+     final String name;
+     final String description;
+     final double price;
+     final int stock;
+
+     Product({required this.id, required this.name, required this.description, required this.price, required this.stock});
+
+     factory Product.fromJson(Map<String, dynamic> json) {
+       return Product(
+         id: json['id'],
+         name: json['name'],
+         description: json['description'],
+         price: json['price'],
+         stock: json['stock'],
+       );
+     }
+   }
+   ```
+
+2. **Create Providers**
+   - Example for `product_provider.dart`:
+   ```dart
+   import 'package:flutter/material.dart';
+   import 'package:http/http.dart' as http;
+   import 'dart:convert';
+
+   import '../models/product.dart';
+
+   class ProductProvider with ChangeNotifier {
+     List<Product> _products = [];
+
+     List<Product> get products => _products;
+
+     Future<void> fetchProducts() async {
+       final response = await http.get(Uri.parse('http://localhost:8000/api/products'));
+
+       if (response.statusCode == 200) {
+         List jsonResponse = json.decode(response.body);
+         _products = jsonResponse.map((product) => Product.fromJson(product)).toList();
+         notifyListeners();
+       } else {
+         throw Exception('Failed to load products');
+       }
+     }
+   }
+   ```
+
+3. **Create Screens**
+   - Example for `product_list_screen.dart`:
+   ```dart
+   import 'package:flutter/material.dart';
+   import 'package:provider/provider.dart';
+
+   import '../providers/product_provider.dart';
+
+   class ProductListScreen extends StatelessWidget {
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         appBar: AppBar(
+           title: Text('Products'),
+         ),
+         body: FutureBuilder(
+           future: Provider.of<ProductProvider>(context, listen: false).fetchProducts(),
+           builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
+               ? Center(child: CircularProgressIndicator())
+               : Consumer<ProductProvider>(
+                   builder: (ctx, productProvider, _) => ListView.builder(
+                     itemCount: productProvider.products.length,
+                     itemBuilder: (ctx, i) => ListTile(
+                       title: Text(productProvider.products[i].name),
+                       subtitle: Text('\$${productProvider.products[i].price}'),
+                     ),
+                   ),
+                 ),
+         ),
+       );
+     }
+   }
+   ```
+
+4. **Add Routes**
+   - Update `main.dart`:
+   ```dart
+   import 'package:flutter/material.dart';
+   import 'package:provider/provider.dart';
+
+   import './screens/product_list_screen.dart';
+   import './providers/product_provider.dart';
+
+   void main() {
+     runApp(MyApp());
+   }
+
+   class MyApp extends StatelessWidget {
+     @override
+     Widget build(BuildContext context) {
+       return MultiProvider(
+         providers: [
+           ChangeNotifierProvider(create: (_) => ProductProvider()),
+         ],
+         child: MaterialApp(
+           title: 'Delizio',
+           theme: ThemeData(
+             primarySwatch: Colors.blue,
+           ),
+           home: ProductListScreen(),
+         ),
+       );
+     }
+   }
+   ```
+
+#### 5. Design and Implement the Mobile Interface
+
+1. **Improve UI/UX**
+   - Add more detailed product views, shopping cart functionality, user authentication, and order management.
+   - Utilize Flutter's widgets to create a clean and user-friendly interface.
+
+2. **Testing**
+   - Test the app thoroughly on different devices and screen sizes.
+   - Ensure the Laravel API works seamlessly with the Flutter app.
+
+### Final Steps
+
+1. **Run Laravel Server**
+   ```sh
+   php artisan serve
+   ```
+
+2. **Run Flutter App**
+   ```sh
+   flutter run
+   ```
+
+Now you have a basic e-commerce mobile app with a Flutter frontend and a Laravel backend. Expand the app by adding more features, refining the UI, and ensuring a seamless user experience.
